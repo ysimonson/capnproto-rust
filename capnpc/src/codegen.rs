@@ -1318,7 +1318,7 @@ fn generate_node(gen: &GeneratorContext,
                 Line(format!("impl <'a,{0}> Builder<'a,{0}> {1} {{", params.params, params.where_clause)),
                 Indent(
                     Box::new(Branch(vec![
-                        Line(format!("pub fn as_reader(self) -> Reader<'a,{}> {{", params.params)),
+                        Line(format!("pub fn into_reader(self) -> Reader<'a,{}> {{", params.params)),
                         Indent(Box::new(Line("::capnp::traits::FromStructReader::new(self.builder.as_reader())".to_string()))),
                         Line("}".to_string()),
                         Line(format!("pub fn reborrow(&mut self) -> Builder<{}> {{", params.params)),
@@ -1634,7 +1634,7 @@ fn generate_node(gen: &GeneratorContext,
                         ))
                     }),
                     Indent(Box::new(Branch( vec!(
-                        Line(format!("pub fn from_server<_T: ::capnp::private::capability::ServerHook>(self) -> Client{} {{", bracketed_params)),
+                        Line(format!("pub fn into_client<_T: ::capnp::private::capability::ServerHook>(self) -> Client{} {{", bracketed_params)),
                         Indent(
                             Box::new(Line(format!("Client {{ client: _T::new_client(::std::boxed::Box::new(ServerDispatch {{ server: ::std::boxed::Box::new(self.u), {} }})), {} }}", params.phantom_data, params.phantom_data)))),
                         Line("}".to_string()))))),
